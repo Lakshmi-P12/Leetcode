@@ -1,0 +1,34 @@
+Leetcode 1011: Capacity To Ship Packages Within D Days
+
+min weight to be shipped is the max value in the array and the max weight should be sum of total values of the array. binary search on this range gives min capacity to finish within d days.
+
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int max = 0;
+        int sum = 0;
+        
+        for(int n : weights) {
+            sum+=n;
+            if(n > max)
+            max = n;
+        }
+        int left = max;
+        int right = sum;
+        while(left < right) {
+            int mid = (left + right)/2;
+            int daysNeeded = 1, currentWeight = 0;
+            for(int weight : weights) {
+                if(currentWeight + weight > mid) {
+                    daysNeeded++;
+                    currentWeight = 0;
+                }
+                currentWeight += weight;
+            }
+            if(daysNeeded > days)
+            left = mid + 1;
+            else
+            right = mid;
+        }
+        return left;
+    }
+}
